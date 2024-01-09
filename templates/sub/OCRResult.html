@@ -1,0 +1,6 @@
+<h1>OCR Results</h1>
+<ul>
+    {% for item in ocr_result %}
+        <li>{{ item.name }}: {{ item.ocr_result }}</li>
+    {% endfor %}
+</ul>

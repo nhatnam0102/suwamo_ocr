@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %} 
+<div class="add-template-container" style="height: 80vh; margin-top:3rem !important;">
+    <div class="row m-0 p-0">
+        <div class="col-5">
+            <div class="file-upload" >
+                <div class="file-upload-select">
+                    <div class="file-select-button" >ファイル選択</div>
+                <div class="file-select-name">選択したファイルがありません。</div> 
+                <input type="file" name="file-upload-input" id="file-upload-input">
+                </div>
+            </div>
+        </div>
+        <div class="col-2">
+            
+        </div>
+        <div class="col-5">
+            <!-- <a class="header__button" style="height:5rem !important;" >
+                <span class="icon">
+                    <i class="fa-solid fa-camera"></i>
+                </span>
+                <span class="texts">
+                  <span class="text-2">カメラ</span>
+                </span>
+              </a> -->
+        </div>
+    </div>
+
+<div class="row m-0 p-0" style=" height: 75vh !important;
+padding: 10px !important;">
+<div class="col-5">
+    <div class="file-display" id="file-display">
+        <img id="images_file"  class="images-file">
+        <div id="bounding-box-container" class="fadeIn">
+    </div>
+    </div>
+
+   
+</div>
+<div class="col-2 d-flex justify-content-center
+align-items-center ocr__button">
+    <button>
+    <a onclick="uploadAndOCR()"><span>OCR認識</span></a> 
+    </button></div>
+<div class="col-5">
+    <div id="ocr_result"></div>
+</div>
+</div>
+</div>
+{% endblock %}
+ <!--JavaScript-->
+ {% block scripts %}
+ <script src="{{url_for('static', filename='styles/js/screen/index.js')}}"></script>
+ {% endblock %}

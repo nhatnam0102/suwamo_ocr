@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Cache-Control" content="public, max-age=31536000, immutable">
+    <meta http-equiv="Expires" content="Sun, 09 Feb 2023 09:00:00 GMT">
+    <!--Title-->
+    {% block title %}
+
+    {% endblock %}
+
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/css/my_style.css') }}" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='styles/bootstrap.v5.2.1/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <!-- our project just needs Font Awesome Solid + Brands -->
+    <link href="{{ url_for('static', filename='styles/fontawesome/css/fontawesome.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='styles/fontawesome/css/brands.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='styles/fontawesome/css/solid.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='resource/u-icon.ico') }}" />
+
+</head>
+
+<body>
+
+    <div class="row header m-0 p-0">
+     <div class="col-8"><a href="{{ url_for('index')}}"  style="text-align:center;margin-left:45rem;font-size:2rem!important;color:black !important">AI-OCRベータ版</a></div>
+     <div class="col-2"><a class="header__button" >
+        <span class="icon">
+            <i class="fa-solid fa-list"></i>
+        </span>
+        <span class="texts">
+          <span class="text-2">テンプレ表示</span>
+        </span>
+      </a></div>
+     <div class="col-2"><a class="header__button" href="{{ url_for('add_template')}}">
+        <span class="icon">
+            <i class="fa-solid fa-square-plus"></i>
+        </span>
+        <span class="texts">
+          <span class="text-2">テンプレ追加</span>
+        </span>
+      </a></div>
+
+    </div>
+ 
+            <div id="content" class="main-container">
+                {% block content %}
+
+                <!--Something. . .-->
+                {% endblock %}
+            </div>
+
+    <!--JavaScript-->
+    
+    <!-- <script src="{{url_for('static', filename='styles/jQuery.v3.6.3/jQuery.js')}}"></script> -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="{{url_for('static', filename='styles/jQuery.v3.6.3/jquery.ui.touch-punch.js')}}"></script>
+    <script src="{{url_for('static', filename='styles/bootstrap.v5.2.1/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <script src="{{url_for('static', filename='styles/js/my_js.js')}}"></script>
+    {% block scripts %}
+    
+    {% endblock %}
+
+</body>

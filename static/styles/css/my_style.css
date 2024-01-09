@@ -1,0 +1,400 @@
+
+
+:root {
+    --main-background-rgb: 245, 245, 245;
+    --main-background: rgb(var(--main-background-rgb));
+    --main-background-item: #FFF;
+
+    --main-color-rgb: 0,0,0;
+    --main-color: rgb(var(--main-color-rgb));
+
+    --1-color-rgb: 70, 139, 151;
+    --1-color: rgb(var(--1-color-rgb));
+
+    --2-color-rgb: 239, 98, 98;
+    --2-color: rgb(var(--2-color-rgb));
+
+    --3-color-rgb: 243, 170, 96;
+    --3-color: rgb(var(--3-color-rgb));
+
+    --danger-color: 228, 100, 36;
+    --danger-color-rgb: 228, 100, 36;
+}
+
+body {
+    font-family: 'Yu Gothic' !important;
+
+    background-attachment: fixed;
+
+    background-color: var(--main-background) !important;
+
+}
+.header{
+    position: fixed;
+    background: white !important;
+    width: 100% !important;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.main-container {
+    padding: 5px;
+    height: 90vh;
+    transition: width 0.3s ease-out;
+}
+
+.file-upload .file-upload-select {
+	display: block;
+	color: black;
+	cursor: pointer;
+  border-radius: 7px;
+	text-align: left;
+    /* border: 1px solid black; */
+	background: white;
+	overflow: hidden;
+	position: relative;
+}
+.file-upload .file-upload-select .file-select-button {
+	background: #161f27;
+	padding: 10px;
+    color: white!important;
+	display: inline-block;
+}
+.file-upload .file-upload-select .file-select-name {
+	display: inline-block;
+	padding: 10px;
+}
+.file-upload .file-upload-select:hover .file-select-button {
+	background: #324759;
+	color: #ffffff;
+	transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-webkit-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;
+}
+.file-upload .file-upload-select input[type="file"] {
+	display: none;
+}
+.show-file{
+    margin-top: 1rem;
+}
+
+.ocr__button a {
+  position: relative;
+  display: inline-block;
+  border-radius: 7px;
+  padding: 15px 30px;
+  border: 2px solid #fefefe;
+  text-transform: uppercase;
+  color: #fefefe !important;
+  text-decoration: none !important;
+  font-weight: 600;
+  font-size: 20px;
+  }
+  
+  .ocr__button a::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: -2px;
+    width: calc(100% + 4px);
+    height: calc(100% - 12px);
+    background-color: #212121;
+    transition: 0.3s ease-in-out;
+    transform: scaleY(1);
+  }
+  /* Button */
+  .ocr__button a:hover::before {
+    transform: scaleY(0);
+  }
+  
+  .ocr__button a::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: -2px;
+    height: calc(100% + 4px);
+    width: calc(100% - 12px);
+    background-color: #212121;
+    transition: 0.3s ease-in-out;
+    transform: scaleX(1);
+    transition-delay: 0.5s;
+  }
+  
+  .ocr__button  a:hover::after {
+    transform: scaleX(0);
+  }
+  
+  .ocr__button a span {
+    position: relative;
+    z-index: 3;
+  }
+  
+  .ocr__button  button {
+    text-decoration: none;
+    background-color: #212121;
+    border-radius: 7px;
+    border: none;
+  }
+/* Button */
+
+/* Button */
+.header__button {
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+    width:100%;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 7px;
+    justify-content: center;
+    /* border: 2px solid #000; */
+    padding: 0.625rem 1.5rem;
+    text-align: center;
+    background: black;
+    color: white;
+    cursor: pointer;
+    outline: 0;
+    transition: all 0.2s ease;
+    text-decoration: none !important;
+  }
+  
+ .header__button :hover {
+    background: white !important;
+    color: rgba(0, 0, 0, 1) !important;
+  }
+  
+  .icon {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+  
+  .texts {
+    margin-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1;
+  }
+  
+  .text-1 {
+    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+  
+  .text-2 {
+    font-weight: 600;
+  }
+  
+  /* Button */
+
+
+  .input-container .input {
+      height: 3rem;
+      width: 100%;
+      border: none;
+      background-color: white;
+      border-radius: 7px;
+      padding: 0 1rem;
+      box-shadow: rgba(169, 197, 195, 0.1) 0px 8px 12px;
+      /* border: 1px solid black; */
+      transition: border-color 0.3s cubic-bezier(0.25, 0.01, 0.25, 1) 0s,
+          color 0.3s cubic-bezier(0.25, 0.01, 0.25, 1) 0s,
+          background 0.2s cubic-bezier(0.25, 0.01, 0.25, 1) 0s;
+  
+}
+
+/* Apply styles when the input is focused */
+.input-container input[type="text"]:focus {
+    border: 2px solid var(--main-color);
+}
+
+.input-container .label {
+    display: block;
+    margin-bottom: 0.1rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--main-color);
+    transition: color 0.3s cubic-bezier(0.25, 0.01, 0.25, 1) 0s;
+}
+
+.input-container .input:hover,
+.input-container .input:focus,
+.input-container:hover .input-container .input {
+    outline: none;
+    border-color: var(--main-color);
+}
+
+.input-container:hover .label,
+.input-container .input:focus {
+    color: var(--main-color);
+}
+
+
+
+/* BoundingBox */
+.bounding-box {
+    position: absolute !important;
+    /* border: 1px solid green; */
+    border-radius: 3px;
+    box-sizing: content-box;
+    filter: brightness(2);
+    display: flex;
+    z-index: 4;
+    backdrop-filter: brightness(1);
+    align-items: center;
+    justify-content: center;
+}
+.bounding-box-view{
+  position: absolute !important;
+  border-radius: 3px;
+  background: rgba(133,223,150,.3);
+  box-sizing: border-box;
+  display: flex;
+  z-index: 4;
+  align-items: center;
+  justify-content: center;
+}
+
+.corner-text {
+    position: absolute;
+    font-size: 1.3rem;
+    font-weight: bold;
+    pointer-events: none;
+    background: transparent;
+    border: none;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+}
+
+/* CSS for resizable handles */
+.ui-resizable-handle {
+    border-radius: 3px;
+    width: 10px !important;
+    height: 10px !important;
+    background-color: green;
+}
+
+.ui-resizable-se {
+    right: -5px !important;
+    bottom: -5px !important;
+}
+
+.ui-draggable-handle {
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    cursor: move;
+}
+
+.ui-resizable-handle:hover {
+    width: 12px !important;
+    height: 12px !important;
+}
+
+.file-layout{
+    overflow: hidden;
+    overflow-y: auto !important;
+    height: 80vh !important;
+    position:  relative!important;
+}
+.file-layout img {
+  width: 100% !important;
+    filter: brightness(0.5);
+}
+.file-display img{
+  width: 100% !important;
+}
+.file-display{
+  overflow: hidden;
+  overflow-y: auto !important;
+  height: 80vh !important;
+  position:  relative!important;
+}
+
+/* List */
+
+.example {
+    width: 100%;
+  padding: 10px;
+  }
+  ul.list {
+    margin: 0;
+    padding: 0;
+    height: 13rem;
+    overflow: hidden;
+    overflow-y: auto;
+    list-style: none;
+  }
+  ul.list li {
+    display: flex;
+    padding: 15px;
+    flex-direction: column;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-left: 4px solid #fff;
+    transition: all 0.3s ease;
+    position: relative;
+    cursor: pointer;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  ul.list li .title {
+    font-weight: bold;
+    font-size: 18px;
+    position: relative;
+    z-index: 1;
+    line-height: 24px;
+  }
+  ul.list li .subtitle {
+    position: relative;
+    z-index: 1;
+    font-size: 14px;
+    opacity: 0.7;
+  }
+  
+  ul.list li:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    transition: width 0.3s ease;
+  }
+  ul.list li:hover {
+    color: black;
+  }
+  ul.list li:hover:after {
+    width: 100%;
+    transition: width 0.3s ease;
+  }
+  /* Shopping */
+  ul.list li.item:after {
+    background: linear-gradient(102deg, white 0%, black 100%);
+    /* border: 2px solid black !important; */
+  }
+  ul.list li.item {
+    border-left-color: black;
+  }
+  /* Personal */
+  /* ul.list li.personal:after {
+    background: linear-gradient(102deg, #00cc88 0%, #1096b7 100%);
+  }
+  ul.list li.personal {
+    border-left-color: #00cc88;
+  } */
+  /* Work */
+  /* ul.list li.work:after {
+    background: linear-gradient(102deg, #fa5437 0%, #ed4618 100%);
+  }
+  ul.list li.work {
+    border-left-color: #fa5437;
+  }
+   */
+   .disabled{
+    pointer-events: none;
+    background-color: gainsboro !important;
+   }

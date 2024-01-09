@@ -1,0 +1,124 @@
+{% extends "base.html" %} {% block content %}
+
+<div
+  class="add-template-container"
+  style="height: 80vh; margin-top: 3rem !important"
+>
+  <h2>View Template</h2>
+  <div class="row m-0 p-0">
+    <div class="col-5">
+      <div class="row m-0 p-0">
+        <div class="col-6">
+            <div class="input-container">
+              <label class="label">Template ID</label>
+              <input class="input disabled" id="template-id" />
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="input-container">
+              <label class="label">Template Name</label>
+              <input class="input disabled" id="template-name" />
+            </div>
+          </div>
+          <div class="w-100"></div>
+        <div class="col-12">
+            <div class="input-container">
+                <label class="label">Choose File</label>
+                <div class="file-upload">
+                    <div class="file-upload-select">
+                      <div class="file-select-button">Choose File</div>
+                      <div class="file-select-name">No file chosen...</div>
+                      <input
+                        type="file"
+                        name="file-upload-input"
+                        id="file-upload-input"
+                      />
+                    </div>
+                  </div>
+              </div>
+        </div>
+        <div class="w-100"></div>
+        <div class="col-12">
+            <div class="input-container">
+                <label class="label">Add Features</label>
+                <div class="row">
+                    <div class="col-6">  <input class="input" id="fname" placeholder="Feature Name" value=""/></div>
+                    <div class="col-6"> <a class="header__button" onclick="add_new_box(mode='features')" >
+                        <span class="icon">
+                            <i class="fa-solid fa-square-plus"></i>
+                        </span>
+                        <span class="texts">
+                          <span class="text-2">Add</span>
+                        </span>
+                      </a></div>
+
+                </div>
+              
+            
+              </div>
+
+              <div class="example">
+                <!-- <h4>Feature List</h4> -->
+                <ul id="flist" class="list">
+                
+              
+                </ul>
+              </div>
+              
+        </div>
+        <div class="w-100"></div>
+        <div class="col-12">
+            <div class="input-container">
+                <label class="label">Add Element</label>
+                <div class="row">
+                    <div class="col-6">  <input class="input" id="ename" placeholder="Element_ID"/></div>
+                    <div class="col-6"> <a class="header__button"  onclick="add_new_box(mode='elements')" >
+                        <span class="icon">
+                            <i class="fa-solid fa-square-plus"></i>
+                        </span>
+                        <span class="texts">
+                          <span class="text-2">Add</span>
+                        </span>
+                      </a></div>
+
+                </div>
+              
+            
+              </div>
+              <div class="example">
+                <!-- <h4>Feature List</h4> -->
+                <ul id="elist" class="list">
+                
+              
+                </ul>
+              </div>
+
+        </div>
+        <div class="w-100"></div>
+        <div class="col-12">
+          <a class="header__button" id="add_temp" style="margin-top:20px !important" >
+            <span class="icon">
+              <i class="fa-regular fa-floppy-disk"></i>
+            </span>
+            <span class="texts">
+              <span class="text-2">Save</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-7">
+      <div  class="file-layout" id="file-display">
+        <img id="images_file"  class="images-file">
+        <div id="bounding-box-container" class="fadeIn">
+      </div>
+   
+    </div>
+  </div>
+  <!-- <button onclick="crop()"> ssss</button>
+  <img id="images_file_1" style="width:300px !important"  class="images-file" src="" alt="Selected Image" > -->
+</div>
+
+{% endblock %} {% block scripts %}
+<script src="{{url_for('static', filename='styles/js/screen/view_template.js')}}"></script>
+{% endblock %}
