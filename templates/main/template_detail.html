@@ -1,35 +1,21 @@
 {% extends "base.html" %} {% block content %}
 
 <div class="add-template-container" >
-  <h1>テンプレ追加</h1>
+  <h2>テンプレ追加</h2>
   <div class="row m-0">
     <div class="col-3  m-0 p-0">
       <div class="input-container">
-        <label class="label">仕訳分類ID</label>
-        <input class="input" id="category_id" />
+        <label class="label">分類ID</label>
+        <input class="input" id="category_id" value="{{ category['category_id']}}" />
       </div>
     </div>
     <div class="col-3">
       <div class="input-container">
-        <label class="label">仕訳分類名</label>
-        <input class="input" id="category_name" />
+        <label class="label">分類名</label>
+        <input class="input" id="category_name" value="{{ category['category_name']}}" />
       </div>
     </div>
-    <div class="col-3 m-0 p-0">
-      <div class="input-container">
-        <label class="label">ファイル選</label>
-        <div class="file-upload">
-          <div class="file-upload-select">
-            <div class="file-select-button">ファイル選</div>
-            <div class="file-select-name">
-              選択したファイルがありません。
-            </div>
-            <input type="file" name="file-upload-input" id="file-upload-input" />
-          </div>
-        </div>
-      </div>
-
-    </div>
+   
 
     <!-- <button onclick="crop()"> ssss</button>
   <img id="images_file_1" style="width:300px !important"  class="images-file" src="" alt="Selected Image" > -->
@@ -41,10 +27,39 @@
   margin-top: 5px !important;">
     <div class="col-9 m-0 p-0" style=" border-radius: 7px; box-sizing: border-box; background:white;
     margin-right: 10px !important;">
-      <div class="file-layout" id="file-display">
-        <img id="images_file" ondblclick="handleImageDoubleClick(event)" class="images-file" />
-        <div id="bounding-box-container" class="fadeIn"></div>
+    <div class="file-layout" id="file-display">
+      <img
+        id="images_file"
+        src="data:image/png;base64,{{ category['file_base64'] }}"
+        ondblclick="handleImageDoubleClick(event)"
+        class="images-file"
+      />
+      <div id="bounding-box-container" class="fadeIn">
+        {% for box in category['ocr_detects'] %}
+        <div
+        class="bounding-box"
+        data-x_center="{{ box['x_center'] }}"
+        data-y_center="{{ box['y_center'] }}"
+        data-width="{{ box['width'] }}"
+        data-height="{{ box['height'] }}"
+        data-box_id="{{ box['box_id'] }}"
+        data-temp_type="ocr_detects"
+      >  </div>
+        {% endfor%}
+        {% for box in category['yolo_features'] %}
+        <div
+        class="bounding-box"
+        data-x_center="{{ box['x_center'] }}"
+        data-y_center="{{ box['y_center'] }}"
+        data-width="{{ box['width'] }}"
+        data-height="{{ box['height'] }}"
+        data-box_id="{{ box['box_id'] }}"
+        data-temp_type="yolo_features"
+      >  </div>
+        {% endfor%}
+
       </div>
+    </div>
     </div>
     <div class="col-3 m-0" style="    display: grid;  border-radius: 7px;background:white;
     padding: 15px !important;
@@ -56,7 +71,16 @@
         </div>
 
         <div class="example">
-          <ul id="flist" class="list"></ul>
+          <ul id="flist" class="list">
+            {% for box in category['yolo_features'] %}
+            <li class="item">
+              <span class="title">{{ box["box_name"]}}</span>
+              <span class="subtitle">{{ box["box_id"]}}</span>
+            </li>
+            {% endfor%}
+
+          
+          </ul>
         </div>
       </div>
       <div class="w-100"></div>
@@ -65,7 +89,14 @@
           <label class="label">OCR認識範囲一覧</label>
         </div>
         <div class="example">
-          <ul id="elist" class="list"></ul>
+          <ul id="elist" class="list">
+            {% for box in category['ocr_detects'] %}
+            <li class="item">
+              <span class="title">{{ box["box_name"]}}</span>
+              <span class="subtitle">{{  box["box_id"]}}</span>
+            </li>
+            {% endfor%}
+          </ul>
         </div>
       </div>
       <div class="col-12">
@@ -108,10 +139,6 @@
                   <input type="radio" name="detectType" value="ocr_detects" />
                   <span>OCR認識範囲</span>
                 </label>
-                <label>
-                  <input type="radio" name="detectType" value="ocr_detects" />
-                  <span>テキスト変換</span>
-                </label>
               </form>
             </div>
           </div>
@@ -130,8 +157,12 @@
                   <span>英語・数字・記号</span>
                 </label>
                 <label>
+                  <input type="radio" name="dataType" value="all" />
+                  <span>数字</span>
+                </label>
+                <label>
                   <input type="radio" name="dataType" value="gs_ai" />
-                  <span>拡張（クラウド</span>
+                  <span>拡張（クラウド）</span>
                 </label>
               </form>
             </div>
@@ -207,9 +238,7 @@
             </svg>
           </div>
           <h4 class="modal-title w-100">テンプレが追加されました。</h4>
-
         </div>
-
         <div class="modal-footer justify-content-center">
           <button type="button" class="btn btn-secondary" 　data-bs-dismiss="modal">
             閉じる
@@ -243,6 +272,6 @@
 
 
 {% endblock %} {% block scripts %}
-<script src="{{url_for('static', filename='styles/js/screen/add_template.js')}}"></script>
+<script src="{{url_for('static', filename='styles/js/screen/template_list.js')}}"></script>
 {% endblock %}
 </div>

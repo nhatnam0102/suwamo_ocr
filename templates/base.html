@@ -21,51 +21,80 @@
     <link href="{{ url_for('static', filename='styles/fontawesome/css/brands.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='styles/fontawesome/css/solid.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-    <link rel="shortcut icon" href="{{ url_for('static', filename='resource/u-icon.ico') }}" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='resources/u-icon.ico') }}" />
 
 </head>
 
+
+
 <body>
-
-    <div class="row header m-0 p-0">
-     <div class="col-8"><a href="{{ url_for('index')}}"  style="text-align:center;margin-left:45rem;font-size:2rem!important;color:black !important">AI-OCRベータ版</a></div>
-     <div class="col-2"><a class="header__button" >
-        <span class="icon">
-            <i class="fa-solid fa-list"></i>
-        </span>
-        <span class="texts">
-          <span class="text-2">テンプレ表示</span>
-        </span>
-      </a></div>
-     <div class="col-2"><a class="header__button" href="{{ url_for('add_template')}}">
-        <span class="icon">
-            <i class="fa-solid fa-square-plus"></i>
-        </span>
-        <span class="texts">
-          <span class="text-2">テンプレ追加</span>
-        </span>
-      </a></div>
-
-    </div>
- 
-            <div id="content" class="main-container">
-                {% block content %}
-
-                <!--Something. . .-->
-                {% endblock %}
-            </div>
-
-    <!--JavaScript-->
+  <main>
+    <nav class="main-menu">
+      <div>  <h1>AI-OCRベータ版</h1>
+   
+        <ul>
+          <li class="nav-item">
+            <b></b>
+            <b></b>
+            <a href="{{ url_for('index')}}">
+              <i class="fa-solid fa-house nav-icon"></i>
+              <span class="nav-text">OCR認識</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <b></b>
+            <b></b>
+            <a href="{{ url_for('add_template')}}">
+              <i class="fa-solid fa-plus nav-icon"></i>
+              <span class="nav-text">テンプレ追加</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <b></b>
+            <b></b>
+            <a href="{{ url_for('template_list')}}">
+              <i class="fa-solid fa-list nav-icon"></i>
+              <span class="nav-text">テンプレ表示</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <b></b>
+            <b></b>
+            <a href="{{ url_for('predict')}}">
+              <i class="fa-solid fa-layer-group  nav-icon"></i>
+              <span class="nav-text">分類自動仕分</span>
+            </a>
+          </li>
+         
+          
     
-    <!-- <script src="{{url_for('static', filename='styles/jQuery.v3.6.3/jQuery.js')}}"></script> -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script src="{{url_for('static', filename='styles/jQuery.v3.6.3/jquery.ui.touch-punch.js')}}"></script>
-    <script src="{{url_for('static', filename='styles/bootstrap.v5.2.1/js/bootstrap.bundle.min.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
-    <script src="{{url_for('static', filename='styles/js/my_js.js')}}"></script>
-    {% block scripts %}
+        </ul>
+     </div>
+      
+     <div class="d-flex justify-content-center">
+      <img class="logo" src="{{ url_for('static', filename='resources/u-icon.ico') }}" alt="" />
+     </div>
+   
+    </nav>
     
-    {% endblock %}
+    <section id="content" class="content main-container">
+      {% block content %}
+      
 
+      <!--Something. . .-->
+      {% endblock %}
+
+    </section>
+  </main>
+      <!-- <script src="{{url_for('static', filename='styles/jQuery.v3.6.3/jQuery.js')}}"></script> -->
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+      <script src="{{url_for('static', filename='styles/jQuery.v3.6.3/jquery.ui.touch-punch.js')}}"></script>
+      <script src="{{url_for('static', filename='styles/bootstrap.v5.2.1/js/bootstrap.bundle.min.js')}}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+      <script src="{{url_for('static', filename='styles/js/my_js.js')}}"></script>
+      {% block scripts %}
+      
+      {% endblock %}
 </body>
+
