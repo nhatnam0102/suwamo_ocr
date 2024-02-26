@@ -1,0 +1,66 @@
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Cache-Control" content="public, max-age=31536000, immutable">
+    <meta http-equiv="Expires" content="Sun, 09 Feb 2023 09:00:00 GMT">
+    <!--Title-->
+    {% block title %}
+
+    {% endblock %}
+
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/css/my_style.css') }}" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='styles/bootstrap.v5.2.1/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <!-- our project just needs Font Awesome Solid + Brands -->
+    <link href="{{ url_for('static', filename='styles/fontawesome/css/fontawesome.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='styles/fontawesome/css/brands.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='styles/fontawesome/css/solid.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="shortcut icon" href="{{ url_for('static', filename='resources/u-icon.ico') }}" />
+
+</head>
+
+<div style="    display: flex;
+justify-content: center;
+align-items: center;
+height: 100%;">
+    <div class="wrapper">
+
+        <div class="heading">
+        <h2>こにちは!</h2>
+        <p>アカウントにサインインする</p>
+        </div>
+        
+        <div class="input-group">
+         <input type="text" id="username" class="input-field" placeholder="ユーザー" >
+        </div>
+        
+        <div class="input-group">
+         <input type="password" id="password" class="input-field" placeholder="パスワード" >
+        </div>
+        
+        <div class="input-group row　m-0 p-0">
+        
+         <!-- <div class="row">
+         <input type="checkbox" id="remember" hidden>
+         <label for="remember" class="custom-checkbox"></label>
+         <label for="remember">Remember me?</label>
+         </div>
+          -->
+         <!-- <div class="row">
+            <a href="#" target="_blank">Forgot password?</a> 
+         </div>
+        </div> -->
+        
+        
+        <div class="input-group">
+            <a class="w-100" href="{{ url_for('index')}}">     <button>サインイン <i class="fa-solid fa-arrow-right"></i></button></a>
+    
+        </div>
+        
+        </div>
+        
+</div>

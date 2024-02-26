@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block content %}
+
+
+  <h1>分類リスト表示</h1>
+  <div class="row m-0 p-0" style="margin-bottom:5px !important;">
+    <div class="col-6">
+      <div class="input-container">
+        <input class="input"  id="searchInput" placeholder="分類名を入力してください"/>
+      </div>
+    </div>
+    <div class="col-3">
+      <a class="header__button" id="searchButton" style="width: 16rem!important;">
+        <span class="icon">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+        <span class="texts">
+          <span class="text-2">検査</span>
+        </span>
+      </a>
+    </div>
+  </div>
+    <div class="card-body">
+      <ul class="image-list flex-3 m-0 p-0" style="    padding-right: 1.5rem !important;">
+        {% for category in categories %}
+        <li class="image-item">
+          <img src="data:image/png;base64,{{ category['file_base64'] }}" alt="Image"/>
+          <div class="image-details">
+            <h5 data-category_name=" {{category['category_name']}}">分類名: {{category['category_name']}} </h5>
+              <button class="btn show-detail-btn" data-category_id="{{category['category_id']}}"
+              style="    float: right;
+              background: aliceblue;
+              position: relative;
+              font-weight: bold;
+              z-index: 9999;">表示・修正</button>
+           
+          </div>
+        </li> 
+  
+        {%endfor%}
+ 
+      </ul>
+    </div>
+
+
+  {% endblock %} {% block scripts %}
+  <script src="{{url_for('static', filename='styles/js/screen/template_list.js')}}"></script>
+  {% endblock %}
+</div>
