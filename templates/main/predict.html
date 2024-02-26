@@ -1,0 +1,93 @@
+{% extends "base.html" %} {% block content %}
+<h1>自動仕分</h1>
+
+
+<div class="row m-0 p-0">
+  <div class="col-3  m-0 ">
+    <div class="input-container">
+      <label class="label">Source Path</label>
+      <input class="input" id="sources_path" value="{{ sources_path }}" readonly />
+    </div>
+  </div>
+  <div class="col-3  m-0">
+  <div class="input-container">
+    <label class="label">Predict Path</label>
+    <div style="display: flex; position: relative;">
+      <input class="input" id="predict_path" value="{{ predict_path }}" readonly />
+    </div>
+  </div>
+  </div>
+  <div class="col-3 d-flex justify-content-center align-items-center ">
+    <div class="input-container">
+      <label class="label">　</label>
+      <div class="d-flex justify-content-center align-items-center ocr__button">
+        <button>
+            <a id="btn_predict"><span>自動仕分</span></a>
+        </button>
+    </div>
+    </div>
+  
+  </div>
+  
+
+  </div>
+
+
+  <div class="row m-0 p-0" style="height: 83vh;">
+    <div class="col-3 m-0 p-0" style="padding: 10px !important;">
+      <div class="w-100 h-100" style="background:white;border-radius:7px;" id="file_explorer">
+        <h2>Directories in Predict Path</h2>
+        <ul>
+            {% for directory in directories %}
+                <li class="directory" data-path="{{ directory }}">{{ directory }}</li>
+            {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="col-9 m-0 p-0"  style="padding: 10px !important;" >
+      <div  class="w-100 h-100" style="background:white;border-radius:7px;">
+        
+      </div>
+    </div>
+
+  </div>
+
+<div class="modal" id="process_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="contain1 d-none">
+        <div class="spinner">
+          <span>自</span>
+          <span>動</span>
+          <span>仕</span>
+          <span>分</span>
+          <span>中</span>
+          <span>・</span>
+          <span>・</span>
+          <span>・</span>
+        </div>
+        </div>
+        <div class="contain2 d-none">
+         
+          <h4 class="modal-title w-100">分類自動仕分できました。    <a id="open_folder">フォルダ開く</a></h4>
+      
+          </div>
+          <div class="contain3 d-none">
+            <h4 class="modal-title w-100">商品が削除できませんでした。</h4>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}
+<!--JavaScript-->
+{% block scripts %}
+<script src="{{url_for('static', filename='styles/js/screen/predict.js')}}"></script>
+{% endblock %}

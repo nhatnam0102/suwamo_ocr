@@ -3,16 +3,22 @@ let fileSelect = document.getElementsByClassName("file-upload-select")[0];
 let fileDisplay = document.getElementById("file-display");
 let imgWidth = null;
 let imgHeight = null;
-let template_data = { template_id: null,template_name:null, features: [], elements: [] };
+let template_data = {
+  category_id: null,
+  category_name: null,
+ 　yolo_features: [],
+  ocr_detects: [],
+};
 let $image_file = $("#images_file");
 let originalWidth = null;
 let originalHeight = null;
+let selectedFile=null;
 
 fileSelect.onclick = function () {
   fileInput.click();
 };
 fileInput.onchange = function () {
-  let selectedFile = fileInput.files[0];
+  selectedFile = fileInput.files[0];
 
   if (selectedFile) {
     let filename = selectedFile.name;
@@ -58,42 +64,32 @@ function displayImage(file) {
   reader.readAsDataURL(file);
 }
 
-function addNewBox(temp_type,xCenter, yCenter, width, height, id,name) {
-  let $list=null;
-  if(temp_type==="features"){
-    $list=  $('#flist');
-  }
-  else{
-    $list=  $('#elist');
+function addNewBox(temp_box) {
+  let $list = null;
+  if (temp_box.detectType === "yolo_features") {
+    $list = $("#flist");
+  } else {
+    $list = $("#elist");
   }
   // Tạo một đối tượng jQuery mới đại diện cho bounding-box
   var newBox = $(`<div class="bounding-box"></div>`);
 
   // Thiết lập các thuộc tính của bounding-box
-  newBox.data("x_center", xCenter);
-  newBox.data("y_center", yCenter);
-  newBox.data("width", width);
-  newBox.data("height", height);
-  newBox.data("id", id);
-  newBox.data("type",temp_type);
+  newBox.data("x_center", temp_box.x_center);
+  newBox.data("y_center", temp_box.y_center);
+  newBox.data("width", temp_box.width);
+  newBox.data("height", temp_box.height);
+  newBox.data("box_id", temp_box.box_id);
+  newBox.data("detectType", temp_box.detectType);
   $("#bounding-box-container").append(newBox);
-  console.log(temp_type);
 
-  template_data[`${temp_type}`].push({
-    x_center: xCenter,
-    y_center: yCenter,
-    width: width,
-    height: height,
-    id: id,
-    name: name
-  });
+  template_data[`${temp_box.detectType}`].push(temp_box);
   initBoundingBox(newBox);
-  
 
   $list.prepend(`
   <li class="item">
-  <span class="title">Id: ${id}</span>
-  <span class="subtitle">Name:${name}</span>
+  <span class="title">項目名001:${ temp_box.box_name}</span>
+  <span class="subtitle">項目ID001: ${ temp_box.box_id}</span>
 </li>`);
   console.log(template_data);
 }
@@ -103,7 +99,6 @@ function initBoundingBox(boundingBox) {
   var yCenter = parseFloat(boundingBox.data("y_center"));
   var width = parseFloat(boundingBox.data("width"));
   var height = parseFloat(boundingBox.data("height"));
-
 
   boundingBox.css({
     left: xCenter * imgWidth - (width * imgWidth) / 2 + "px",
@@ -137,13 +132,79 @@ function initBoundingBox(boundingBox) {
     handlerOneClick(boundingBox);
   });
 }
+function handleImageDoubleClick(event) {
+  var container = $("#file-display");
+
+  // Lấy vị trí của sự kiện click trên toàn trang (viewport)
+  var xInViewport = event.clientX;
+  var yInViewport = event.clientY;
+
+  // Lấy kích thước của tấm ảnh và vị trí của nó trong viewport
+  var containerOffset = container.offset();
+  var relativeX = xInViewport - containerOffset.left + container.scrollLeft();
+  var relativeY = yInViewport - containerOffset.top + container.scrollTop();
+
+  let width = 100;
+  let height = 50;
+  var xCenter = (relativeX + width / 2) / imgWidth;
+  var yCenter = (relativeY + height / 2) / imgHeight;
+
+  var Width = width / imgWidth;
+  var Height = height / imgHeight;
+
+  // Show modal
+  var modal = $("#myModal");
+  modal.show();
+
+
+  // Handle the click on the "Add Box" button inside the modal
+  $("#addBoxButton").off('click').on("click", function () {
+
+    let selectedFile = fileInput.files[0];
+    let detectType =$('input[name="detectType"]:checked').val()
+  
+    if (!selectedFile) {
+      alert("Please select a file");
+      return;
+    }
+    if ($("#title").val().length === 0) {
+      alert("Please add feature Name");
+      return;
+    }
+
+    // Close the modal
+    modal.hide();
+    let box_id = generateUUID((mode = 0)).toString();
+    // Continue with your existing code to add the new box
+  
+    let dataType=$('input[name="dataType"]:checked').val()
+    let temp_box = {
+      detectType: detectType,
+      x_center: xCenter,
+      y_center: yCenter,
+      width: Width,
+      height: Height,
+      box_id: box_id,
+      box_name: $("#title").val(),
+      box_datatype: dataType,
+    };
+    addNewBox(temp_box)
+    
+    
+  });
+
+
+  $("#closeModalButton").off('click').on("click", function () {
+    // Close the modal without adding a new box
+    modal.hide();
+  });
+}
 
 function handleBoundingBox(element, width, height) {
   // Update the coordinates in image_detail_
-  var temp_type = element.data("type");
-  var id_ = element.data("id");
+  var temp_type = element.data("detectType");
+  var id_ = element.data("box_id");
   var container = $("#file-display");
-  console.log(element.offset());
 
   var containerOffset = container.offset();
   var boxOffset = element.offset();
@@ -151,13 +212,11 @@ function handleBoundingBox(element, width, height) {
   // Add scroll positions to get the correct coordinates
   var scrollLeft = container.scrollLeft();
   var scrollTop = container.scrollTop();
-  console.log("ssssssss",boxOffset.left, boxOffset.top);
 
   var relativeX = boxOffset.left - containerOffset.left + scrollLeft;
   var relativeY = boxOffset.top - containerOffset.top + scrollTop;
   for (let feature of template_data[`${temp_type}`]) {
-    if (feature.id === id_) {
-   
+    if (feature.box_id === id_) {
       var xCenter = (relativeX + width / 2) / imgWidth;
       var yCenter = (relativeY + height / 2) / imgHeight;
       var Width = width / imgWidth;
@@ -167,7 +226,6 @@ function handleBoundingBox(element, width, height) {
       feature.y_center = yCenter;
       feature.width = Width;
       feature.height = Height;
-      console.log(feature);
 
       // Update the element.data
       element.data("x_center", xCenter);
@@ -204,9 +262,8 @@ function handlerOneClick(boundingBox) {
             background: `green`,
           });
         },
-        
-        resize: function (event, ui) {  
-          
+
+        resize: function (event, ui) {
           handleBoundingBox(
             $(this),
             ui.size.width,
@@ -247,43 +304,6 @@ function handlerDoubleClick(boundingBox) {
     });
 }
 
-function add_new_box(temp_type="") {
-  let selectedFile = fileInput.files[0];
-  let name="";
-  if (temp_type==='features'){
-     name=$("#fname").val();
-  }
-  else{
-    name=$("#ename").val();
-  }
-
-
-  if (!selectedFile) {
-    alert("Please select a file");
-    return
-  }
-  if (name.length === 0){
-    alert("Please add feature Name");
-    return
-  }
-  let id = generateUUID((mode = 0)).toString();
-
-  let temp_box = {
-    x_center: 0.1,
-    y_center: 0.1,
-    width: 0.1,
-    height: 0.1,
-  };
-  addNewBox(
-    temp_type,
-    temp_box.x_center,
-    temp_box.y_center,
-    temp_box.width,
-    temp_box.height,
-    id,
-    name
-  );
-}
 function crop() {
   var canvas = document.createElement("canvas");
 
@@ -353,21 +373,29 @@ function crop() {
   }
 }
 
-$("#add_temp").on("click", function (e) {
-  template_data.template_id = $("#template-id").val();
-  template_data.template_name = $("#template-name").val();
-  $.ajax({
-    url: "/add_template",
-    type: "POST",
-    contentType: "application/json;charset=utf-8",
-    data: JSON.stringify(template_data),
-    success: function (response) {
-      if (response === "OK") {
-        console.log("OK");
-      }
-    },
-    error: function (xhr) {},
+function hideAllSections1(...elements) {
+
+
+  elements.forEach((element) => {
+    if (element !== undefined|| element !=null) {
+      element.removeClass("d-none").addClass("d-none");;
+    }
   });
+}
+
+$("#btnShowModalConfirm").off("click").on("click", function (e) {
+
+  hideAllSections1(
+    $(".confirm__del-box"),
+    $(".confirm__del-image"),
+    $(".confirm__del-ok"),
+    $(".confirm__del-ng")
+  );
+  $(".confirm__del-image").removeClass("d-none");
+
+  $("#confirm").modal("show");
+
+  
 });
 
 function generateUUID(mode = null) {
@@ -389,3 +417,59 @@ function generateUUID(mode = null) {
 
 let uuid = generateUUID((mode = null));
 $("#template-id").val(uuid);
+if ($('input[name="detectType"]:checked').val() === 'yolo_features') {
+  $('#dataTypeContainer').addClass('hidden');
+}
+
+$('input[name="detectType"]').change(function() {
+  if ($(this).val() === 'yolo_features') {
+    $('#dataTypeContainer').addClass('hidden');
+  } else {
+    $('#dataTypeContainer').removeClass('hidden');
+  }
+});
+
+
+// Event handler for the delete image button click
+$("#btnAddTemp").on("click", function (e) {
+  // AJAX request to delete the image
+  template_data.category_id = $("#category_id").val();
+  template_data.category_name = $("#category_name").val();
+
+      var formData = new FormData();
+      var template_data_string = JSON.stringify(template_data);
+      formData.append('file', selectedFile);
+      formData.append('data', template_data_string);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/add_template', true);
+
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          hideAllSections1(
+            $(".confirm__del-image"),
+            $(".confirm__del-box"),
+            $(".confirm__del-ok"),
+            $(".confirm__del-ng")
+          );
+          $(".confirm__del-ok").removeClass("d-none");
+  
+          // Reload the page after a delay
+          setTimeout(function () {
+            window.location.reload();
+          }, 2000);
+        } else {
+          hideAllSections1(
+            $(".confirm__del-image"),
+            $(".confirm__del-box"),
+            $(".confirm__del-ok"),
+            $(".confirm__del-ng")
+          );
+          $(".confirm__del-ng").removeClass("d-none");
+        }
+      };
+
+      xhr.send(formData);
+
+});
+

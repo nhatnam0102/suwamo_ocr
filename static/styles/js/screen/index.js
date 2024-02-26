@@ -9,6 +9,8 @@ fileSelect.onclick = function() {
 	fileInput.click();
 }
 fileInput.onchange = function() {
+    $("#bounding-box-container").html("");
+    $('.table-container').removeClass('d-none').addClass('d-none');
     let selectedFile = fileInput.files[0];
 
     if (selectedFile) {
@@ -51,61 +53,71 @@ function displayImage(file) {
 }
 
 
+let response_results;
 function uploadAndOCR() {
+    
+    $('.loader').removeClass('d-none');
+    $('.table-container').removeClass('d-none').addClass('d-none');
     let selectedFile = fileInput.files[0];
-
     if (selectedFile) {
         var formData = new FormData();
         formData.append('file', selectedFile);
+        // formData.append('selectedCategory',selectedCategory);
 
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/upload', true);
 
         xhr.onload = function () {
             if (xhr.status === 200) {
+                $('.loader').removeClass('d-none').addClass('d-none');
+                $('.table-container').removeClass('d-none');
                 var response = JSON.parse(xhr.responseText);
-                if (response.success) {
-                    let htmlContent=`<div class="row m-0 p-0">
-                    <div class="col-4">EasyOCR</div>
-                    <div class="col-4">Tesseract</div>
-                    </div>`;
-                    for (var rs of response.ocr_result) {{
-                            htmlContent += `<div class="row m-0 p-0">
-             
-                            <div class="col-4">
-                                <div class="input-container">
-                                  <label class="label">${rs.boxes.name}</label>
-                                  <input class="input" value="${rs.easyocr_result}" />
-                                </div>
-                              </div>
-                              <div class="col-4">
-                              <div class="input-container">
-                                <label class="label">${rs.boxes.name}</label>
-                                <input class="input" value="${rs.tesseract_result}" />
-                              </div>
-                            </div>
-                              <div class="w-100"></div>`;
-                        }
+                if (response.status==="success") {
+                const tableHead = $('#data-table thead');
+                const headerRow = $('<tr class="header-row"></tr>');
+                response_results=response.ocr_result;
+               
+                response.ocr_result['headers'].forEach(function(header) {
+                    headerRow.append(`<th>${header}</th>`);
+                });
+                tableHead.html(headerRow);
 
-                          // Tạo một đối tượng jQuery mới đại diện cho bounding-box
-                            var newBox = $(
-                                `<div class="bounding-box-view"></div>`
-                            );
+                const tableBody = $('#data-body');
+                const rowData =response.ocr_result['data'].map(item => {
+                  const listItems = [];
+                  for (let key of item) {
+                    listItems.push(`<li>${key}
+                  </li>`);
+                  }
+                //   <button class="cssbuttons-io">
+                //     <span>
+                //       候補</span>
+                //   </button>
+              
+                  let htmlString = `<td>${listItems.join('')}</td>`;
 
-                            // Thiết lập các thuộc tính của bounding-box
-                            newBox.data("x_center", rs.boxes.x_center);
-                            newBox.data("y_center", rs.boxes.y_center);
-                            newBox.data("width", rs.boxes.width);
-                            newBox.data("height", rs.boxes.height);
-                            newBox.data("id", rs.boxes.id);
-                            $("#bounding-box-container").append(newBox);
-                            initBoundingBox(newBox);
-                                                }
-                    
-                    // Update the HTML content of '#ocr_result'
-                    $('#ocr_result').html(htmlContent);
+                  return htmlString;
+                });
+                const row = `<tr>${rowData.join('\n')}</tr>`;
+                tableBody.html(row);
+                $("#bounding-box-container").html("");
+                for (let box of response.ocr_result['boxes'] ){
+                  var newBox = $(
+                    `<div class="bounding-box-view"></div>`
+                ); 
+                      newBox.data("x_center", box.x_center);
+                      newBox.data("y_center",  box.y_center);
+                      newBox.data("width", box.width);
+                      newBox.data("height", box.height);
+                      newBox.data("box_id", box.box_id);
+                      $("#bounding-box-container").append(newBox);
+                      initBoundingBox(newBox);
+                }                   
+            
                 } else {
-                  console.log('Failed to upload');
+                    $('.loader').removeClass('d-none').addClass('d-none');
+                        alert("認識できませんでした。");
+                       
                 }
             }
         };
@@ -113,9 +125,30 @@ function uploadAndOCR() {
         xhr.send(formData);
     } else {
         alert('Please choose a file before uploading.');
+        $('.loader').removeClass('d-none').addClass('d-none');
     }
 }
 
+
+function exportDataToCSV(filename) {
+    var csv = [];
+    var headers =response_results.headers;
+    var data =response_results.data;
+    csv.push(`"${headers.join('","')}"`);
+    var row = [];
+    for(let list_text of data) {
+      row.push(`"${list_text.join(",")}"`);
+    }
+    csv.push(row.join(","));
+    var csvFile = new Blob(["\uFEFF" + csv.join("\n")], { type: "text/csv;charset=utf-8;" });
+    var downloadLink = document.createElement("a");
+    downloadLink.download = filename;
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+    downloadLink.style.display = "none";
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+}
 
 
 function initBoundingBox(boundingBox) {
@@ -134,4 +167,73 @@ function initBoundingBox(boundingBox) {
   
 
   }
+
+
+// const selectWrapper = document.querySelector('.select-wrapper');
+// const selectBtn = selectWrapper.querySelector('.select-btn');
+// const searchInput = selectWrapper.querySelector('input');
+// const optionsBox = selectWrapper.querySelector('.options');
+
+// searchInput.setAttribute("placeholder", "Search");
+
+// // Function to fetch categories from Flask server
+// async function fetchCategories() {
+//     try {
+//         const response = await fetch('/get_categories'); // Replace with the actual endpoint on your Flask server
+//         const data = await response.json();
+//         return data;
+//     } catch (error) {
+//         console.error('Error fetching categories:', error);
+//         return [];
+//     }
+// }
+
+// // Function to add categories to the optionsBox
+// async function addCategory(selectedCategory) {
+//     optionsBox.innerHTML = "";
+
+//     // Fetch categories from Flask server
+//     const categories = await fetchCategories();
+
+//     for (let category of categories) {
+//         let isSelected = category.category_id == selectedCategory ? "class='selected'" : "";
+//         optionsBox.insertAdjacentHTML("beforeend", `
+//             <li onclick="updateName(this)" ${isSelected} data-category_id="${category.category_id}">${ category.category_name}</li>
+//         `);
+//     }
+// }
+
+// // Call addCategory to initially load categories
+// addCategory();
+// let selectedCategory=null;
+
+// function updateName(selectedLi) {
+//     searchInput.value = "";
+//     addCategory($(selectedLi).data('category_id'));
+//     selectWrapper.classList.remove('active');
+//     selectBtn.firstElementChild.textContent = selectedLi.textContent;
+//     selectedCategory=$(selectedLi).data('category_id');
+//     console.log(selectedCategory);
+
+// }
+
+// searchInput.addEventListener("keyup", () => {
+//     let arrSearch = [];
+//     let searchedCategory = searchInput.value.toLowerCase();
+    
+//     arrSearch = categories.filter(data => {
+//         return data.toLowerCase().startsWith(searchedCategory);
+//     }).map((data) => `<li onclick="updateName(this)">${data}</li>`).join("");
+//     optionsBox.innerHTML = arrSearch ? arrSearch : `<p>分類が見つかりません。</p>`;
+// });
+
+// selectBtn.addEventListener("click", () => {
+//     selectWrapper.classList.toggle('active');
+// });
   
+// document.addEventListener("click", (event) => {
+//     const isInsideSelectWrapper = selectWrapper.contains(event.target);
+//     if (!isInsideSelectWrapper && selectWrapper.classList.contains('active')) {
+//         selectWrapper.classList.remove('active');
+//     }
+// });

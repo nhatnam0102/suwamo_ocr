@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Explorer</title>
+</head>
+<body>
+    <h1>File Explorer</h1>
+    <p>Current path: {{ path }}</p>
+    <ul>
+        {% for file in files %}
+            <li><a href="?path={{ file.path }}">{{ file.name }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

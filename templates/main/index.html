@@ -1,54 +1,109 @@
-{% extends "base.html" %}
-{% block content %} 
-<div class="add-template-container" style="height: 80vh; margin-top:3rem !important;">
-    <div class="row m-0 p-0">
-        <div class="col-5">
-            <div class="file-upload" >
-                <div class="file-upload-select">
-                    <div class="file-select-button" >ファイル選択</div>
-                <div class="file-select-name">選択したファイルがありません。</div> 
-                <input type="file" name="file-upload-input" id="file-upload-input">
+{% extends "base.html" %} {% block content %}
+<h1>AI-OCR認識</h1>
+<div class="row m-0 p-0">
+    <!-- <div class="col-2">
+        <div class="select-wrapper">
+            <div class="select-btn">
+                <span>分類選択</span>
+                <i class="fa-solid fa-angle-down"></i>
+            </div>
+            <div class="content">
+                <div class="search">
+                    <input type="text">
                 </div>
+                <ul class="options"></ul>
             </div>
         </div>
-        <div class="col-2">
-            
-        </div>
-        <div class="col-5">
-            <!-- <a class="header__button" style="height:5rem !important;" >
-                <span class="icon">
-                    <i class="fa-solid fa-camera"></i>
-                </span>
-                <span class="texts">
-                  <span class="text-2">カメラ</span>
-                </span>
-              </a> -->
+    </div> -->
+    <div class="col-3">
+        <div class="file-upload">
+            <div class="file-upload-select">
+                <div class="file-select-button">ファイル選択</div>
+                <div class="file-select-name">選択したファイルがありません。</div>
+                <input type="file" name="file-upload-input" id="file-upload-input" />
+            </div>
         </div>
     </div>
-
-<div class="row m-0 p-0" style=" height: 75vh !important;
-padding: 10px !important;">
-<div class="col-5">
-    <div class="file-display" id="file-display">
-        <img id="images_file"  class="images-file">
-        <div id="bounding-box-container" class="fadeIn">
+    <div class="col-3">
+        <div class="d-flex justify-content-center align-items-center ocr__button" style="margin:5px; ">
+            <button>
+                <a onclick="uploadAndOCR()"><span>認識</span></a>
+            </button>
+        </div>
     </div>
-    </div>
+</div>
+<div class="add-template-container" style="height: 85vh !important;
+overflow-y: hidden; ">
 
-   
-</div>
-<div class="col-2 d-flex justify-content-center
-align-items-center ocr__button">
-    <button>
-    <a onclick="uploadAndOCR()"><span>OCR認識</span></a> 
-    </button></div>
-<div class="col-5">
-    <div id="ocr_result"></div>
-</div>
+
+    <div class="row m-0 p-0"> <div class="col-5 m-0" style="padding:5px; ">
+            <div class="file-display" id="file-display">
+                <img id="images_file" class="images-file" />
+                <div id="bounding-box-container" class="fadeIn"></div>
+            </div>
+
+        </div>
+        <div class="col-7 m-0 " style="padding:5px;">
+            <div style="overflow-x: hidden;height:100%;
+        background:white;  padding:5px;
+        border-radius:7px;">
+                <div class="loader d-none">
+                    <label>少々お待ちください。</label>
+                    <div class="loading"></div>
+                </div>
+
+                <div class="table-container d-none">
+                    <div class="mb-2">
+                        <h2 class="">結果</h2>
+                        <div style="    display: flex;
+                  justify-content: space-between;">
+                            <small class="text-secondary">認識結果</small>
+                            <button class="header__button" id="export_to_csv"
+                                onclick="exportDataToCSV('ocr_result.csv')" style=" 
+                  width: 10rem;">
+                                <span class="icon">
+                                    <i class="fa-solid fa-download"></i>
+                                </span>
+                                <span class="texts">
+                                    <span class="text-2">CSV輸出</span>
+                                </span>
+                            </button>
+                        </div>
+
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="data-table" class="data-table">
+                            <thead class="bg-light">
+                            </thead>
+                            <tbody id="data-body"> </tbody>
+                        </table>
+                    </div>
+
+                    <!--         
+                <nav class="mt-4">
+                  <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                      <a class="page-link">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                      <a class="page-link" href="#">Next</a>
+                    </li>
+                  </ul>
+                </nav> -->
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
 </div>
 </div>
 {% endblock %}
- <!--JavaScript-->
- {% block scripts %}
- <script src="{{url_for('static', filename='styles/js/screen/index.js')}}"></script>
- {% endblock %}
+<!--JavaScript-->
+{% block scripts %}
+<script src="{{url_for('static', filename='styles/js/screen/index.js')}}"></script>
+{% endblock %}
